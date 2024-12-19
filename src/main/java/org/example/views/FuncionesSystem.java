@@ -35,6 +35,11 @@ public class FuncionesSystem extends javax.swing.JFrame {
         eliminarFuncionButton.setBackground(new java.awt.Color(51, 51, 51));
 
         verFuncionesButton.setBackground(new java.awt.Color(51, 51, 51));
+        verFuncionesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verFuncionesButtonActionPerformed(evt);
+            }
+        });
 
         crearFuncionButton.setBackground(new java.awt.Color(51, 51, 51));
         crearFuncionButton.addActionListener(new java.awt.event.ActionListener() {
@@ -141,6 +146,12 @@ public class FuncionesSystem extends javax.swing.JFrame {
         fc.setVisible(true);
         dispose();
     }//GEN-LAST:event_crearFuncionButtonActionPerformed
+
+    private void verFuncionesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verFuncionesButtonActionPerformed
+        FuncionesList fl = new FuncionesList();
+        fl.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_verFuncionesButtonActionPerformed
     
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
