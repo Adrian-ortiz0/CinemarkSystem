@@ -64,6 +64,11 @@ public class MovieRegister extends javax.swing.JFrame {
 
         salirButton.setForeground(new java.awt.Color(255, 255, 255));
         salirButton.setText("Salir");
+        salirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirButtonActionPerformed(evt);
+            }
+        });
 
         registrarButton.setForeground(new java.awt.Color(255, 255, 255));
         registrarButton.setText("Registrar");
@@ -189,6 +194,12 @@ public class MovieRegister extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al registrar la película: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_registrarButtonActionPerformed
+
+    private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed
+        MovieSystem ms = new MovieSystem();
+        ms.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_salirButtonActionPerformed
     private void cargarGeneros(){
         inputGeneros.removeAllItems();
         for(Generos genero : Generos.values()){

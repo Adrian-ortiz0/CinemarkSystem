@@ -9,16 +9,26 @@ public class Funcion {
     private LocalDateTime fechaFin;
     private Pelicula pelicula;
     private Sala sala;
+    private boolean completa;
 
     public Funcion() {
     }
 
-    public Funcion(int id, LocalDateTime fechaInicio, LocalDateTime fechaFin, Pelicula pelicula, Sala sala) {
+    public Funcion(int id, LocalDateTime fechaInicio, LocalDateTime fechaFin, Pelicula pelicula, Sala sala, boolean completa) {
         this.id = id;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.pelicula = pelicula;
         this.sala = sala;
+        this.completa = completa;
+    }
+
+    public boolean isCompleta() {
+        return completa;
+    }
+
+    public void setCompleta(boolean completa) {
+        this.completa = completa;
     }
 
     public LocalDateTime getFechaInicio() {

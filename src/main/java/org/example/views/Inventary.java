@@ -33,10 +33,11 @@ public class Inventary extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaMateriaPrima = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
+        salirButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(28, 28, 28));
+        jPanel1.setBackground(new java.awt.Color(20, 20, 20));
 
         tablaMateriaPrima.setBackground(new java.awt.Color(31, 31, 31));
         tablaMateriaPrima.setForeground(new java.awt.Color(230, 230, 230));
@@ -67,6 +68,13 @@ public class Inventary extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(235, 235, 235));
         jLabel6.setText("Cinemark Inventario General");
 
+        salirButton.setText("Salir");
+        salirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -74,15 +82,19 @@ public class Inventary extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jLabel6)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(salirButton)
+                .addGap(58, 58, 58))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(salirButton))
+                .addGap(45, 45, 45)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -101,6 +113,12 @@ public class Inventary extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed
+        InventarySystem is = new InventarySystem();
+        is.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_salirButtonActionPerformed
+
     
     
     public static void main(String args[]) {
@@ -116,6 +134,7 @@ public class Inventary extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton salirButton;
     private javax.swing.JTable tablaMateriaPrima;
     // End of variables declaration//GEN-END:variables
 }

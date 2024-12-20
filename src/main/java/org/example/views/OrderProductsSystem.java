@@ -35,6 +35,7 @@ public class OrderProductsSystem extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaInventarioAgotado = new javax.swing.JTable();
         reOrdenarButton = new javax.swing.JButton();
+        salirButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,10 +63,21 @@ public class OrderProductsSystem extends javax.swing.JFrame {
         tablaInventarioAgotado.setSelectionForeground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(tablaInventarioAgotado);
 
+        reOrdenarButton.setBackground(new java.awt.Color(51, 51, 51));
+        reOrdenarButton.setForeground(new java.awt.Color(255, 255, 255));
         reOrdenarButton.setText("Ordenar productos");
         reOrdenarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reOrdenarButtonActionPerformed(evt);
+            }
+        });
+
+        salirButton.setBackground(new java.awt.Color(51, 51, 51));
+        salirButton.setForeground(new java.awt.Color(255, 255, 255));
+        salirButton.setText("Salir");
+        salirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirButtonActionPerformed(evt);
             }
         });
 
@@ -80,7 +92,9 @@ public class OrderProductsSystem extends javax.swing.JFrame {
                         .addGap(43, 43, 43)
                         .addComponent(jLabel6))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(266, 266, 266)
+                        .addGap(46, 46, 46)
+                        .addComponent(salirButton)
+                        .addGap(141, 141, 141)
                         .addComponent(reOrdenarButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -92,7 +106,9 @@ public class OrderProductsSystem extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addComponent(reOrdenarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(reOrdenarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(salirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42))
         );
 
@@ -126,6 +142,12 @@ public class OrderProductsSystem extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_reOrdenarButtonActionPerformed
 
+    private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed
+       InventarySystem is = new InventarySystem();
+       is.setVisible(true);
+       dispose();
+    }//GEN-LAST:event_salirButtonActionPerformed
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -140,6 +162,7 @@ public class OrderProductsSystem extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton reOrdenarButton;
+    private javax.swing.JButton salirButton;
     private javax.swing.JTable tablaInventarioAgotado;
     // End of variables declaration//GEN-END:variables
 }

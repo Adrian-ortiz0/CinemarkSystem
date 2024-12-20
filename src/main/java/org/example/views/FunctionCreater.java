@@ -216,6 +216,7 @@ public class FunctionCreater extends javax.swing.JFrame {
         }
     }
     
+    
     private void configurarJspinner(){
         SpinnerDateModel model = new SpinnerDateModel();
         fechaInicioSpinner.setModel(model);
@@ -223,6 +224,7 @@ public class FunctionCreater extends javax.swing.JFrame {
         fechaInicioSpinner.setEditor(editor);
         fechaInicioSpinner.setValue(new Date());
     }
+    
     
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
