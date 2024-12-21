@@ -136,6 +136,11 @@ public class VerAsientos extends javax.swing.JFrame {
         salirButton.setBackground(new java.awt.Color(51, 51, 51));
         salirButton.setForeground(new java.awt.Color(255, 255, 255));
         salirButton.setText("Salir");
+        salirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirButtonActionPerformed(evt);
+            }
+        });
 
         siguienteButton.setBackground(new java.awt.Color(51, 51, 51));
         siguienteButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -199,6 +204,12 @@ public class VerAsientos extends javax.swing.JFrame {
             dispose();
         }
     }//GEN-LAST:event_siguienteButtonActionPerformed
+
+    private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed
+        TiqueteroSystem ts = new TiqueteroSystem();
+        ts.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_salirButtonActionPerformed
 
 
 

@@ -10,11 +10,87 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.Document;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import java.io.File;
 import java.io.IOException;
+import org.example.models.Asiento;
+import org.example.models.Boleto;
 
 public class PDFGenerator {
+    
+    public static void generarTicketDeCompra(Boleto boleto, double total) {
+        try {
+            File folder = new File("facturas");
+            if (!folder.exists()) {
+                folder.mkdir(); 
+            }
+            String outputPdf = "facturas/orden_de_compra_" + System.currentTimeMillis() + ".pdf";  
+            File file = new File(outputPdf);
+
+            if (file.exists()) {
+                file.delete(); 
+            }
+            PdfWriter writer = new PdfWriter(outputPdf);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+            Image logo = new Image(ImageDataFactory.create("https://1000marcas.net/wp-content/uploads/2022/12/Cinemark-Logo.png"))
+                    .scaleToFit(100, 100)
+                    .setHorizontalAlignment(HorizontalAlignment.CENTER);
+            document.add(logo);
+
+            Paragraph title = new Paragraph("Ticket de Compra")
+                    .setFont(PdfFontFactory.createFont())
+                    .setFontSize(18)
+                    .setBold()
+                    .setTextAlignment(TextAlignment.CENTER);
+            document.add(title);
+
+            Paragraph clienteInfo = new Paragraph(
+                    "Cliente: " + boleto.getCliente().getNombre() + " " + boleto.getCliente().getApellido() + "\n" +
+                    "Cédula: " + boleto.getCliente().getCedula())
+                    .setTextAlignment(TextAlignment.CENTER);
+            document.add(clienteInfo);
+
+            Paragraph funcionInfo = new Paragraph(
+                    "Función: " + boleto.getFuncion().getPelicula().getNombre() + "\n" +
+                    "Sala: " + boleto.getFuncion().getSala().getNombre() + "\n" +
+                    "Fecha: " + boleto.getFuncion().getFechaInicio())
+                    .setTextAlignment(TextAlignment.CENTER);
+            document.add(funcionInfo);
+
+            Table table = new Table(3);
+            table.setHorizontalAlignment(HorizontalAlignment.CENTER); 
+            table.addCell(new Cell().add(new Paragraph("Fila")).setTextAlignment(TextAlignment.CENTER));
+            table.addCell(new Cell().add(new Paragraph("Número")).setTextAlignment(TextAlignment.CENTER));
+            table.addCell(new Cell().add(new Paragraph("Precio")).setTextAlignment(TextAlignment.CENTER));
+
+            Asiento asiento = boleto.getAsientos();
+            if (asiento != null) {
+                table.addCell(new Cell().add(new Paragraph(asiento.getFila())).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph(String.valueOf(asiento.getNumero()))).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph(String.valueOf(asiento.getTipo().getPrecio()))).setTextAlignment(TextAlignment.CENTER));
+            } else {
+                table.addCell(new Cell().add(new Paragraph("N/A")).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph("N/A")).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph("N/A")).setTextAlignment(TextAlignment.CENTER));
+            }
+            document.add(table);
+
+            Paragraph totalParagraph = new Paragraph("Total: " + total)
+                    .setFontSize(14)
+                    .setBold()
+                    .setTextAlignment(TextAlignment.CENTER);
+            document.add(totalParagraph);
+
+            document.close();
+
+            System.out.println("Ticket generado y guardado en: " + outputPdf);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
      public static void generateOrdenDeCompraPDF(String proveedor, String producto, 
                                               int cantidad, double precioUnitario, double total) {

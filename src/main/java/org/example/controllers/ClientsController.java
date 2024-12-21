@@ -12,7 +12,7 @@ public class ClientsController {
     
     public static Cliente obtenerClientePorCedula(String cedula){
         CRUD.setConexion(ConnectionDB.getConnection());
-        String sql = "select * from cliente where Cedula = ?";
+        String sql = "select * from clientes where Cedula = ?";
         ResultSet rs = CRUD.consultarDB(sql, cedula);
         Cliente clienteObtener = new Cliente();
         try {

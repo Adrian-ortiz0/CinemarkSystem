@@ -5,15 +5,19 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.example.models.Boleto;
+import org.example.models.FacturaBoleto;
 import org.example.models.Tiquetero;
 import org.example.persistence.CRUD;
 import org.example.persistence.ConnectionDB;
 
 public class TiqueteroController {
     
-//    public static boolean registrarVentaBoleto(){
-//        
-//    }
+    public static boolean registrarVentaBoleto(FacturaBoleto facturaBoleto){
+        CRUD.setConexion(ConnectionDB.getConnection());
+        String sql = "insert into facturaBoleto(FechaFactura, Total, ID_Cliente, ID_Boleto) values (?, ?, ?, ?)";
+        Object[] params = {facturaBoleto.getFecha(), facturaBoleto.getTotal(), facturaBoleto.getCliente().getId(), facturaBoleto.getBoleto().getId()};
+        return CRUD.insertarDB(sql, params);
+    }
     
     public static boolean venderBoleto(Boleto boleto){
         CRUD.setConexion(ConnectionDB.getConnection());

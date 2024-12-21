@@ -13,6 +13,12 @@ import org.example.persistence.ConnectionDB;
 
 public class AsientosController {
     
+    public static boolean actualizarAsiento(int idAsiento){
+        CRUD.setConexion(ConnectionDB.getConnection());
+        String sql = "UPDATE asientos SET Ocupado = true WHERE ID = ?";
+        return CRUD.updateDB(sql, idAsiento);
+    }
+    
     public static TipoAsiento traerTipoAsientoPorId(int idTipoAsiento){
         CRUD.setConexion(ConnectionDB.getConnection());
         String sql = "SELECT * FROM tipoAsientos WHERE ID = ?";
@@ -32,33 +38,59 @@ public class AsientosController {
         return tipoAsiento;
     }
     
-    public static ArrayList<Asiento> traerAsientosPorSala(int idSala){
+    public static ArrayList<Asiento> traerAsientosPorSala(int idSala) {
         CRUD.setConexion(ConnectionDB.getConnection());
-        String sql = "SELECT * FROM Asientos WHERE ID_Sala = ?;";
-        ArrayList<Asiento> asientos = new ArrayList();
+        String sql = "SELECT " +
+                     "a.ID AS ID_Asiento, " +
+                     "a.ID_Sala, " +
+                     "a.ID_TipoAsiento, " +
+                     "a.Fila, " +
+                     "a.Numero, " +
+                     "a.Ocupado, " +
+                     "ta.ID AS ID_TipoAsiento, " +
+                     "ta.Nombre AS NombreTipoAsiento, " +
+                     "ta.Precio " +
+                     "FROM asientos a " +
+                     "INNER JOIN tipoAsientos ta " +
+                     "ON a.ID_TipoAsiento = ta.ID " +
+                     "WHERE a.ID_Sala = ?;";
+
+        ArrayList<Asiento> asientos = new ArrayList<>();
         ResultSet rs = CRUD.consultarDB(sql, idSala);
-        Sala sala = SalasController.obtenerSalaPorId(idSala);
+        Sala sala = SalasController.obtenerSalaPorId(idSala); 
+
         try {
-            while(rs != null && rs.next()){
+            while (rs != null && rs.next()) {
                 Asiento asiento = new Asiento();
-                int idAsiento = rs.getInt("ID");
-                
-//                int tipoSalaId = rs.getInt("ID_TipoAsiento");
-//                TipoAsiento tipoAsiento = traerTipoAsientoPorId(tipoSalaId);
+
+                int idAsiento = rs.getInt("ID_Asiento");
                 String fila = rs.getString("Fila");
                 int numero = rs.getInt("Numero");
                 boolean ocupado = rs.getBoolean("Ocupado");
+
+                int idTipoAsiento = rs.getInt("ID_TipoAsiento");
+                String nombreTipoAsiento = rs.getString("NombreTipoAsiento");
+                double precioTipoAsiento = rs.getDouble("Precio");
+
                 asiento.setId(idAsiento);
                 asiento.setSala(sala);
-//                asiento.setTipo(tipoAsiento);
                 asiento.setFila(fila);
                 asiento.setNumero(numero);
                 asiento.setOcupado(ocupado);
+
+                TipoAsiento tipoAsiento = new TipoAsiento();
+                tipoAsiento.setId(idTipoAsiento);
+                tipoAsiento.setNombre(nombreTipoAsiento);
+                tipoAsiento.setPrecio(precioTipoAsiento);
+
+                asiento.setTipo(tipoAsiento);
+
                 asientos.add(asiento);
             }
         } catch (SQLException ex) {
             Logger.getLogger(AsientosController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return asientos;
+
+        return asientos; 
     }
 }

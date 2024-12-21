@@ -1,19 +1,25 @@
 package org.example.views;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import org.example.controllers.AsientosController;
 import org.example.controllers.ClientsController;
 import org.example.controllers.FunctionsController;
+import org.example.controllers.PDFGenerator;
 import org.example.controllers.TiqueteroController;
 import org.example.models.Asiento;
 import org.example.models.Boleto;
 import org.example.models.Cliente;
+import org.example.models.FacturaBoleto;
 import org.example.models.Funcion;
 
 public class CompraTicket extends javax.swing.JFrame {
     private ArrayList<Asiento> asientos;
     private int idFuncion;
-    public CompraTicket(ArrayList<Asiento> asientos, int idFuncion) {
-        this.asientos = asientos;
+    public CompraTicket(ArrayList<Asiento> asientosElegidos, int idFuncion) {
+        this.asientos = asientosElegidos;
         this.idFuncion = idFuncion;
         initComponents();
     }
@@ -31,6 +37,7 @@ public class CompraTicket extends javax.swing.JFrame {
         inputCedula = new javax.swing.JTextField();
         comprarButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        salirButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,28 +62,39 @@ public class CompraTicket extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Cinemark");
 
+        salirButton.setBackground(new java.awt.Color(51, 51, 51));
+        salirButton.setForeground(new java.awt.Color(255, 255, 255));
+        salirButton.setText("Salir");
+        salirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(57, 57, 57)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(187, 187, 187)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(130, 130, 130)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(salirButton))
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(comprarButton)
                             .addComponent(inputNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(124, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -97,7 +115,9 @@ public class CompraTicket extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(inputCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(126, 126, 126)
-                .addComponent(comprarButton)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comprarButton)
+                    .addComponent(salirButton))
                 .addContainerGap(110, Short.MAX_VALUE))
         );
 
@@ -128,17 +148,30 @@ public class CompraTicket extends javax.swing.JFrame {
         cliente.setCedula(cedula);
         ClientsController.crearClientes(cliente);
         Cliente clienteObtenido = ClientsController.obtenerClientePorCedula(cliente.getCedula());
-        double total = 0;
+        
         for(Asiento asiento : asientos){
             Boleto boleto = new Boleto();
             boleto.setAsientos(asiento);
             boleto.setCliente(clienteObtenido);
             boleto.setFuncion(funcion);
+            AsientosController.actualizarAsiento(boleto.getAsientos().getId());
             TiqueteroController.venderBoleto(boleto);
+            double total = 0;
             total += funcion.getSala().getPrecio();
-            // total += asiento.getTipo
+            total += asiento.getTipo().getPrecio();
+            PDFGenerator.generarTicketDeCompra(boleto, total);
+            inputNombre.setText("");
+            inputApellido.setText("");
+            inputCedula.setText("");
         }
+        JOptionPane.showMessageDialog(this, "Tiquete/s generados con exito!");
     }//GEN-LAST:event_comprarButtonActionPerformed
+
+    private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed
+        TiqueteroSystem ts = new TiqueteroSystem();
+        ts.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_salirButtonActionPerformed
 
     public static void main(String args[]) {
 
@@ -170,5 +203,6 @@ public class CompraTicket extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton salirButton;
     // End of variables declaration//GEN-END:variables
 }
