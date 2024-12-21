@@ -28,7 +28,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" alignment="1" max="32767" attributes="0"/>
+          <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -101,7 +101,7 @@
                       </Group>
                       <Component id="salirButton" min="-2" pref="98" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="64" pref="172" max="32767" attributes="0"/>
+                  <EmptySpace min="64" pref="108" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

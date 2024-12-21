@@ -30,7 +30,7 @@ public class FunctionsController {
     
     public static Funcion obtenerFuncionesPorId(int id){
         CRUD.setConexion(ConnectionDB.getConnection());
-        String sql = "SELECT f.ID, p.Nombre AS NombrePelicula, s.Nombre AS NombreSala, f.FechaInicio FROM funciones f JOIN peliculas p ON f.ID_Pelicula = p.ID JOIN salas s ON f.ID_Sala = s.ID WHERE f.ID = ?";
+        String sql = "SELECT f.ID, p.Nombre AS NombrePelicula, s.Nombre AS NombreSala, s.ID as idSala, f.FechaInicio FROM funciones f JOIN peliculas p ON f.ID_Pelicula = p.ID JOIN salas s ON f.ID_Sala = s.ID WHERE f.ID = ?";
         ResultSet rs = CRUD.consultarDB(sql, id);
         Funcion funcion = new Funcion();
         try {
@@ -40,7 +40,9 @@ public class FunctionsController {
                 Pelicula pelicula = new Pelicula();
                 pelicula.setNombre(nombrePelicula);
                 String nombreSala = rs.getString("NombreSala");
+                int idSala = rs.getInt("idSala");
                 Sala sala = new Sala();
+                sala.setId(idSala);
                 sala.setNombre(nombreSala);
                 Timestamp fechaInicioTimestamp = rs.getTimestamp("FechaInicio");
                 LocalDateTime fechaInicio = fechaInicioTimestamp.toLocalDateTime();
@@ -71,6 +73,36 @@ public class FunctionsController {
             funcion.getSala().getId()
         };
         return CRUD.insertarDB(sql, params);
+    }
+    
+    public static ArrayList<Funcion> obtenerFuncionesDisponibles(){
+        CRUD.setConexion(ConnectionDB.getConnection());
+        String sql = "SELECT f.ID, p.Nombre AS NombrePelicula, s.Nombre AS NombreSala, f.FechaInicio FROM funciones f JOIN peliculas p ON f.ID_Pelicula = p.ID JOIN salas s ON f.ID_Sala = s.ID WHERE f.Completa = FALSE";
+        ArrayList<Funcion> funciones = new ArrayList<>();
+        ResultSet rs = CRUD.consultarDB(sql);
+        try {
+            while (rs != null && rs.next()) {
+                int idFuncion = rs.getInt("ID");
+                String nombrePelicula = rs.getString("NombrePelicula");
+                Pelicula pelicula = new Pelicula();
+                pelicula.setNombre(nombrePelicula);
+                String nombreSala = rs.getString("NombreSala");
+                Sala sala = new Sala();
+                sala.setNombre(nombreSala);
+                Timestamp fechaInicioTimestamp = rs.getTimestamp("FechaInicio");
+                LocalDateTime fechaInicio = fechaInicioTimestamp.toLocalDateTime();
+
+                Funcion funcion = new Funcion();
+                funcion.setId(idFuncion);
+                funcion.setPelicula(pelicula);
+                funcion.setSala(sala);
+                funcion.setFechaInicio(fechaInicio);
+                funciones.add(funcion);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(FunctionsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return funciones;
     }
     
     public static ArrayList<Funcion> obtenerFunciones() {
