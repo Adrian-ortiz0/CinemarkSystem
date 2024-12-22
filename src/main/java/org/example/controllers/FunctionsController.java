@@ -66,9 +66,10 @@ public class FunctionsController {
     public static boolean crearFunciones(Funcion funcion){
         CRUD.setConexion(ConnectionDB.getConnection());
         String sql = "INSERT INTO funciones (FechaInicio, FechaFin, ID_Pelicula, ID_Sala)  VALUES (?, ?, ?, ?)";
+        int duracion = funcion.getPelicula().getDuracion();
         Object[] params = {
             funcion.getFechaInicio(),
-            funcion.getFechaInicio().plusMinutes(30),
+            funcion.getFechaInicio().plusMinutes(duracion),
             funcion.getPelicula().getId(),
             funcion.getSala().getId()
         };

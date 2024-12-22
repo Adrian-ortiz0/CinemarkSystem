@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.example.models.Boleto;
@@ -14,15 +15,15 @@ public class TiqueteroController {
     
     public static boolean registrarVentaBoleto(FacturaBoleto facturaBoleto){
         CRUD.setConexion(ConnectionDB.getConnection());
-        String sql = "insert into facturaBoleto(FechaFactura, Total, ID_Cliente, ID_Boleto) values (?, ?, ?, ?)";
-        Object[] params = {facturaBoleto.getFecha(), facturaBoleto.getTotal(), facturaBoleto.getCliente().getId(), facturaBoleto.getBoleto().getId()};
+        String sql = "insert into facturas(FechaFactura, Total, ID_Cliente) values (?, ?, ?, ?)";
+        Object[] params = {facturaBoleto.getFecha(), facturaBoleto.getTotal(), facturaBoleto.getCliente().getId()};
         return CRUD.insertarDB(sql, params);
     }
     
     public static boolean venderBoleto(Boleto boleto){
         CRUD.setConexion(ConnectionDB.getConnection());
-        String sql = "insert into boletos (ID_Cliente, ID_Asiento, ID_Funcion) values (?, ?, ?)";
-        Object[] params = {boleto.getCliente().getId(), boleto.getAsientos().getId(), boleto.getFuncion().getId()};
+        String sql = "insert into boletos (ID_Cliente, ID_Asiento, ID_Funcion, Vencido) values (?, ?, ?, ?)";
+        Object[] params = {boleto.getCliente().getId(), boleto.getAsientos().getId(), boleto.getFuncion().getId(), boleto.isVencido()};
         return CRUD.insertarDB(sql, params);
     }
     

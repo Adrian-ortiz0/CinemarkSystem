@@ -7,6 +7,7 @@ public class Boleto {
     private Cliente cliente;
     private Asiento asientos;
     private Funcion funcion;
+    private boolean vencido;
 
     public Boleto() {
     }
@@ -16,6 +17,22 @@ public class Boleto {
         this.cliente = cliente;
         this.asientos = asientos;
         this.funcion = funcion;
+    }
+
+    public Boleto(int id, Cliente cliente, Asiento asientos, Funcion funcion, boolean vencido) {
+        this.id = id;
+        this.cliente = cliente;
+        this.asientos = asientos;
+        this.funcion = funcion;
+        this.vencido = vencido;
+    }
+
+    public boolean isVencido() {
+        return vencido;
+    }
+
+    public void setVencido(boolean vencido) {
+        this.vencido = vencido;
     }
 
     public Asiento getAsientos() {
