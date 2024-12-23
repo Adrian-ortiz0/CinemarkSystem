@@ -10,27 +10,32 @@ import org.example.persistence.ConnectionDB;
 
 public class ClientsController {
     
-    public static Cliente obtenerClientePorCedula(String cedula){
+        public static Cliente obtenerClientePorCedula(String cedula) {
         CRUD.setConexion(ConnectionDB.getConnection());
-        String sql = "select * from clientes where Cedula = ?";
-        ResultSet rs = CRUD.consultarDB(sql, cedula);
-        Cliente clienteObtener = new Cliente();
+        String sql = "SELECT * FROM clientes WHERE Cedula = ?";
+        Object[] params = {cedula};
+        ResultSet rs = CRUD.consultarDB(sql, params);
+
         try {
-            while(rs != null && rs.next()){
+            if (rs != null && rs.next()) {
                 int id = rs.getInt("ID");
                 String nombre = rs.getString("Nombre");
                 String apellido = rs.getString("Apellido");
-                clienteObtener.setCedula(cedula);
-                clienteObtener.setId(id);
-                clienteObtener.setNombre(nombre);
-                clienteObtener.setApellido(apellido);
-                clienteObtener.setCedula(cedula);
+                Cliente cliente = new Cliente();
+                cliente.setId(id);
+                cliente.setNombre(nombre);
+                cliente.setApellido(apellido);
+                cliente.setCedula(cedula);
+                return cliente;
+            } else {
+                return null;
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(ClientsController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
-        return clienteObtener;
     }
+
     
     public static boolean crearClientes(Cliente cliente){
         CRUD.setConexion(ConnectionDB.getConnection());

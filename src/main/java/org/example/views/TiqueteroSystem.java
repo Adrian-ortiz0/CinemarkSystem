@@ -137,8 +137,8 @@ public class TiqueteroSystem extends javax.swing.JFrame {
     }//GEN-LAST:event_venderTicketsButtonActionPerformed
 
     private void venderCombosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_venderCombosButtonActionPerformed
-        VenderCombos vc = new VenderCombos();
-        vc.setVisible(true);
+        RegistroComprarCombos rcc = new RegistroComprarCombos();
+        rcc.setVisible(true);
         dispose();
     }//GEN-LAST:event_venderCombosButtonActionPerformed
 

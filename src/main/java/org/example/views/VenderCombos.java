@@ -3,6 +3,7 @@ package org.example.views;
 import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.example.controllers.CombosController;
 import org.example.models.Combo;
@@ -11,7 +12,11 @@ import org.example.models.Producto;
 public class VenderCombos extends javax.swing.JFrame {
     DefaultTableModel mt = new DefaultTableModel();
     DefaultTableModel mtp = new DefaultTableModel();
-    public VenderCombos() {
+    ArrayList<Combo> combosSeleccionados = new ArrayList();
+    ArrayList<Producto> productosSeleccionados = new ArrayList();
+    private String cedulaCliente;
+    public VenderCombos(String cedula) {
+        this.cedulaCliente = cedula;
         initComponents();
         String[] columnasTabla = {"ID", "Combo", "Precio", "Seleccionar"};
         mt.setColumnIdentifiers(columnasTabla);
@@ -78,10 +83,20 @@ public class VenderCombos extends javax.swing.JFrame {
         siguienteButton.setBackground(new java.awt.Color(51, 51, 51));
         siguienteButton.setForeground(new java.awt.Color(255, 255, 255));
         siguienteButton.setText("Siguiente");
+        siguienteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                siguienteButtonActionPerformed(evt);
+            }
+        });
 
         salirButton.setBackground(new java.awt.Color(51, 51, 51));
         salirButton.setForeground(new java.awt.Color(255, 255, 255));
         salirButton.setText("Salir");
+        salirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirButtonActionPerformed(evt);
+            }
+        });
 
         tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -141,15 +156,56 @@ public class VenderCombos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
-    public static void main(String args[]) {
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VenderCombos().setVisible(true);
+    private void siguienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteButtonActionPerformed
+        double totalFacturado = 0;
+        combosSeleccionados.clear();
+        productosSeleccionados.clear();
+        for(int i= 0; i < mt.getRowCount(); i++){
+            boolean isSelected = (boolean) mt.getValueAt(i, 3);
+            if(isSelected){
+                int idCombo = (int) mt.getValueAt(i, 0);
+                String nombreCombo = (String) mt.getValueAt(i, 1);
+                double precioCombo = (double) mt.getValueAt(i, 2);
+                Combo combo = new Combo();
+                combo.setId(idCombo);
+                combo.setNombre(nombreCombo);
+                combo.setPrecioTotal(precioCombo);
+                Combo comboElegido = CombosController.obtenerCombosPorId(idCombo);
+                combosSeleccionados.add(comboElegido);
+                totalFacturado += precioCombo;
             }
-        });
-    }
+        }
+        for(int i = 0; i < mtp.getRowCount(); i++){
+            boolean isSelected = (boolean) mtp.getValueAt(i, 3);
+            if(isSelected){
+                int idProducto = (int) mtp.getValueAt(i, 0);
+                String nombreProducto = (String) mtp.getValueAt(i, 1);
+                double precioProducto = (double) mtp.getValueAt(i, 2);
+                Producto producto = new Producto();
+                producto.setId(idProducto);
+                producto.setNombre(nombreProducto);
+                producto.setPrecio(precioProducto);
+                Producto productoElegido = CombosController.obtenerProductoPorId(idProducto);
+                productosSeleccionados.add(productoElegido);
+                totalFacturado += precioProducto;
+            }
+        }
+        if(combosSeleccionados.isEmpty() && productosSeleccionados.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Debes seleccionar al menos un combo o un producto");
+        } else {
+            ComprarCombos cc = new ComprarCombos(combosSeleccionados, productosSeleccionados, cedulaCliente, totalFacturado); 
+            cc.setVisible(true);
+            dispose();
+        }
+        
+    }//GEN-LAST:event_siguienteButtonActionPerformed
+
+    private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed
+        TiqueteroSystem ts = new TiqueteroSystem();
+        ts.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_salirButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
