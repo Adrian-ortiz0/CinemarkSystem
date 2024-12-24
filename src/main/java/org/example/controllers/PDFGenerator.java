@@ -1,5 +1,6 @@
 package org.example.controllers;
 
+import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -12,12 +13,101 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import org.example.models.Asiento;
 import org.example.models.Boleto;
+import org.example.models.Cliente;
+import org.example.models.Combo;
+import org.example.models.Producto;
 
 public class PDFGenerator {
+    
+    public static void generarFacturaCompra(Cliente cliente, ArrayList<Combo> combos, ArrayList<Producto> productos, double total, String medioDePago, int idCompra) {
+        try {
+            File folder = new File("facturas");
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
+
+            String outputPdf = "facturas/factura_compra_" + idCompra + "_" + System.currentTimeMillis() + ".pdf";
+            File file = new File(outputPdf);
+
+            if (file.exists()) {
+                file.delete();
+            }
+
+            PdfWriter writer = new PdfWriter(outputPdf);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            Image logo = new Image(ImageDataFactory.create("https://1000marcas.net/wp-content/uploads/2022/12/Cinemark-Logo.png"))
+                    .scaleToFit(100, 100)
+                    .setHorizontalAlignment(HorizontalAlignment.CENTER);
+            document.add(logo);
+
+            Paragraph title = new Paragraph("Factura de Compra")
+                    .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA))
+                    .setFontSize(18)
+                    .setBold()
+                    .setTextAlignment(TextAlignment.CENTER);
+            document.add(title);
+
+            String clienteInfo = "Cliente: " + cliente.getNombre() + " " + cliente.getApellido() + "\n" +
+                                 "Cédula: " + cliente.getCedula() + "\n" +
+                                 "Medio de Pago: " + medioDePago + "\n" +
+                                 "ID de Compra: " + idCompra + "\n" +
+                                 "Fecha: " + LocalDate.now();
+            document.add(new Paragraph(clienteInfo).setTextAlignment(TextAlignment.LEFT));
+
+            Table table = new Table(5);
+            table.setWidth(UnitValue.createPercentValue(100));
+            table.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            table.addCell(new Cell().add(new Paragraph("Tipo")).setTextAlignment(TextAlignment.CENTER));
+            table.addCell(new Cell().add(new Paragraph("Nombre")).setTextAlignment(TextAlignment.CENTER));
+            table.addCell(new Cell().add(new Paragraph("Cantidad")).setTextAlignment(TextAlignment.CENTER));
+            table.addCell(new Cell().add(new Paragraph("Precio Unitario")).setTextAlignment(TextAlignment.CENTER));
+            table.addCell(new Cell().add(new Paragraph("Total")).setTextAlignment(TextAlignment.CENTER));
+
+            for (Combo combo : combos) {
+                table.addCell(new Cell().add(new Paragraph("Combo")).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph(combo.getNombre())).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph("1")).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph(String.valueOf(combo.getPrecioTotal()))).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph(String.valueOf(combo.getPrecioTotal()))).setTextAlignment(TextAlignment.CENTER));
+            }
+
+            for (Producto producto : productos) {
+                table.addCell(new Cell().add(new Paragraph("Producto")).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph(producto.getNombre())).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph("1")).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph(String.valueOf(producto.getPrecio()))).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph(String.valueOf(producto.getPrecio()))).setTextAlignment(TextAlignment.CENTER));
+            }
+
+            document.add(table);
+
+            Paragraph totalParagraph = new Paragraph("Total: " + total)
+                    .setFontSize(14)
+                    .setBold()
+                    .setTextAlignment(TextAlignment.RIGHT);
+            document.add(totalParagraph);
+
+            document.close();
+
+            System.out.println("Factura generada y guardada en: " + outputPdf);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
     
     public static void generarTicketDeCompra(Boleto boleto, double total) {
         try {

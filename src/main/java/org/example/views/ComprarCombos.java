@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import org.example.controllers.ClientsController;
 import org.example.controllers.CombosController;
+import org.example.controllers.PDFGenerator;
 import org.example.models.Cliente;
 import org.example.models.Combo;
 import org.example.models.MateriaPrima;
@@ -53,6 +54,11 @@ public class ComprarCombos extends javax.swing.JFrame {
         inputMedioDePago.setBackground(new java.awt.Color(51, 51, 51));
         inputMedioDePago.setForeground(new java.awt.Color(255, 255, 255));
         inputMedioDePago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EFECTIVO", "TARJETA" }));
+        inputMedioDePago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputMedioDePagoActionPerformed(evt);
+            }
+        });
 
         comprarButton.setBackground(new java.awt.Color(51, 51, 51));
         comprarButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -201,9 +207,12 @@ public class ComprarCombos extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Error al registrar detalles del producto.");
             }
         }
+        String medioDePago = (String) inputMedioDePago.getSelectedItem();
 
         JOptionPane.showMessageDialog(this, "Compra realizada con éxito!");
         inputMedioDePago.setSelectedIndex(0);
+        PDFGenerator.generarFacturaCompra(cliente, combos, productos, totalFacturado, medioDePago, idCompra);
+        
     }//GEN-LAST:event_comprarButtonActionPerformed
 
     private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed
@@ -212,6 +221,10 @@ public class ComprarCombos extends javax.swing.JFrame {
         dispose();
         
     }//GEN-LAST:event_salirButtonActionPerformed
+
+    private void inputMedioDePagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputMedioDePagoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputMedioDePagoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
