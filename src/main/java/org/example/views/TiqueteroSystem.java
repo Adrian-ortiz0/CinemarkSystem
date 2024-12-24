@@ -131,8 +131,8 @@ public class TiqueteroSystem extends javax.swing.JFrame {
     }//GEN-LAST:event_salirButtonActionPerformed
 
     private void venderTicketsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_venderTicketsButtonActionPerformed
-        VenderTicketsSystem vts = new VenderTicketsSystem();
-        vts.setVisible(true);
+        RegistroComprarTickets rct = new RegistroComprarTickets();
+        rct.setVisible(true);
         dispose();
     }//GEN-LAST:event_venderTicketsButtonActionPerformed
 

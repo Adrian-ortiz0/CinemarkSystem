@@ -21,23 +21,26 @@ public class VerAsientos extends javax.swing.JFrame {
     private int idFuncion;
     private ArrayList<Asiento> asientos;
     private ArrayList<Asiento> asientosSeleccionados = new ArrayList<>();
-    
-    public VerAsientos(int idFuncion) {
+    private String cedula;
+    private double total = 0;
+    public VerAsientos(int idFuncion, String cedulaObtenida) {
+        this.cedula = cedulaObtenida;
         this.idFuncion = idFuncion;
         initComponents();
         this.setSize(800, 800);
         asientosPanel.setVisible(true);
-        Funcion funcion = FunctionsController.obtenerFuncionesPorId(idFuncion);
-        asientos = AsientosController.traerAsientosPorSala(funcion.getSala().getId());
+        cargarAsientosPorFuncion();
+    }
+    
+    private void cargarAsientosPorFuncion() {
+        asientos = FunctionsController.obtenerAsientosPorFuncion(idFuncion);
         System.out.println("Número de asientos: " + asientos.size());
-
         cargarAsientos();
-        
     }
     
     private void cargarAsientos() {
         asientosPanel.removeAll();
-        
+    
         JPanel contenedorPrincipal = new JPanel();
         contenedorPrincipal.setLayout(new BorderLayout(0, 20));
 
@@ -59,36 +62,42 @@ public class VerAsientos extends javax.swing.JFrame {
         int numFilas = (int) Math.ceil(asientos.size() / (double) numColumnas);
         gridAsientosPanel.setLayout(new GridLayout(numFilas, numColumnas, 5, 5));
 
-        int numAsientosPreferenciales = 10; 
-        int numAsientosComunes = asientos.size() - numAsientosPreferenciales;
-
         for (int i = 0; i < asientos.size(); i++) {
-            Asiento asiento = asientos.get(i);
-            JButton asientoButton = new JButton(asiento.getFila() + asiento.getNumero());
-            asientoButton.setPreferredSize(new Dimension(50, 50));
-            asientoButton.setMinimumSize(new Dimension(50, 50));
-            asientoButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        Asiento asiento = asientos.get(i);
+        JButton asientoButton = new JButton(asiento.getFila() + asiento.getNumero());
+        asientoButton.setPreferredSize(new Dimension(50, 50));
+        asientoButton.setMinimumSize(new Dimension(50, 50));
+        asientoButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-            if (asiento.isOcupado()) {
-                asientoButton.setBackground(Color.RED);
-                asientoButton.setEnabled(false);
-            } else if (i >= numAsientosComunes) {
-                asientoButton.setBackground(Color.YELLOW);
-            } else {
-                asientoButton.setBackground(Color.GREEN);
-            }
-
-            asientoButton.addActionListener(e -> {
-                if (!asiento.isOcupado()) {
-                    asiento.setOcupado(true);
-                    asientoButton.setBackground(Color.RED);
-                    JOptionPane.showMessageDialog(this, "Asiento " + asiento.getFila() + asiento.getNumero() + " seleccionado.");
-                    asientosSeleccionados.add(asiento);
-                }
-            });
-
-            gridAsientosPanel.add(asientoButton);
+        if (asiento.isOcupado()) {
+            asientoButton.setBackground(Color.RED);
+            asientoButton.setEnabled(false);
+        } else {
+            asientoButton.setBackground(Color.GREEN);
         }
+
+        asientoButton.addActionListener(e -> {
+            if (!asiento.isOcupado()) {
+                if (asientosSeleccionados.contains(asiento)) {
+                    asientosSeleccionados.remove(asiento);
+                    asiento.setOcupado(false);
+                    asientoButton.setBackground(Color.GREEN);
+                } else {
+                    asientosSeleccionados.add(asiento);
+                    asiento.setOcupado(true);
+                    total += asiento.getTipo().getPrecio();
+                    asientoButton.setBackground(Color.YELLOW);
+                }
+                FunctionsController.actualizarEstadoAsiento(idFuncion, asiento.getId(), asiento.isOcupado());
+                cargarAsientos();
+            } else {
+                JOptionPane.showMessageDialog(this, "El asiento no está disponible.");
+            }
+        });
+
+        gridAsientosPanel.add(asientoButton);
+    }
+
 
         contenedorAsientos.add(gridAsientosPanel, BorderLayout.CENTER);
 
@@ -192,10 +201,10 @@ public class VerAsientos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void siguienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteButtonActionPerformed
-        if(asientosSeleccionados.isEmpty()){
+         if (asientosSeleccionados.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar al menos un asiento para continuar!");
         } else {
-            CompraTicket ct = new CompraTicket(asientosSeleccionados, idFuncion);
+            CompraTicket ct = new CompraTicket(asientosSeleccionados, idFuncion, cedula, total);
             ct.setVisible(true);
             dispose();
         }

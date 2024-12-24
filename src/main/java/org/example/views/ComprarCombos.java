@@ -147,13 +147,10 @@ public class ComprarCombos extends javax.swing.JFrame {
             return;
         }
 
-        // Inicializar variables para total de facturación
         double totalFacturado = 0;
 
-        // Calcular el total facturado y actualizar inventario para combos
         for (Combo combo : combos) {
             totalFacturado += combo.getPrecioTotal();
-            // Verificar y actualizar el inventario de materias primas de los productos del combo
             List<Producto> productosCombo = combo.getProductos();
             if (productosCombo != null) {
                 for (Producto producto : productosCombo) {
@@ -172,10 +169,8 @@ public class ComprarCombos extends javax.swing.JFrame {
             }
         }
 
-        // Calcular el total facturado y actualizar inventario para productos individuales
         for (Producto producto : productos) {
             totalFacturado += producto.getPrecio();
-            // Obtener y actualizar el inventario de materias primas del producto
             ArrayList<MateriaPrima> materiasPrimas = CombosController.obtenerMateriasPrimasProducto(producto.getId());
             for (MateriaPrima mp : materiasPrimas) {
                 boolean actualizado = CombosController.actualizarInventario(mp.getId(), mp.getCantidad());
@@ -186,7 +181,6 @@ public class ComprarCombos extends javax.swing.JFrame {
             }
         }
 
-        // Insertar la compra en la tabla `comprasCombosProductos`
         int idCompra = CombosController.insertarCompra(cliente.getId(), totalFacturado, (String) inputMedioDePago.getSelectedItem());
 
         if (idCompra <= 0) {
@@ -194,7 +188,6 @@ public class ComprarCombos extends javax.swing.JFrame {
             return;
         }
 
-        // Insertar detalles de la compra en la tabla `detalleCompras`
         for (Combo combo : combos) {
             boolean detalleInsertado = CombosController.insertarDetalleCompra(idCompra, combo.getId(), null, 1, combo.getPrecioTotal());
             if (!detalleInsertado) {
@@ -210,7 +203,6 @@ public class ComprarCombos extends javax.swing.JFrame {
         }
 
         JOptionPane.showMessageDialog(this, "Compra realizada con éxito!");
-        // Limpiar campos de entrada
         inputMedioDePago.setSelectedIndex(0);
     }//GEN-LAST:event_comprarButtonActionPerformed
 

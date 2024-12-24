@@ -1,6 +1,7 @@
 package org.example.models;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Funcion {
@@ -10,18 +11,30 @@ public class Funcion {
     private Pelicula pelicula;
     private Sala sala;
     private boolean completa;
+    private ArrayList<Asiento> asientos;
 
     public Funcion() {
     }
 
-    public Funcion(int id, LocalDateTime fechaInicio, LocalDateTime fechaFin, Pelicula pelicula, Sala sala, boolean completa) {
+    public Funcion(int id, LocalDateTime fechaInicio, LocalDateTime fechaFin, Pelicula pelicula, Sala sala, boolean completa, ArrayList<Asiento> asientos) {
         this.id = id;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.pelicula = pelicula;
         this.sala = sala;
         this.completa = completa;
+        this.asientos = asientos;
     }
+
+    public ArrayList<Asiento> getAsientos() {
+        return asientos;
+    }
+
+    public void setAsientos(ArrayList<Asiento> asientos) {
+        this.asientos = asientos;
+    }
+
+
 
     public boolean isCompleta() {
         return completa;

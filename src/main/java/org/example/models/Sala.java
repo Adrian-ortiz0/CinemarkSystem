@@ -1,5 +1,7 @@
 package org.example.models;
 
+import java.util.ArrayList;
+
 public class Sala {
     private int id;
     private String nombre;
@@ -8,11 +10,12 @@ public class Sala {
     private boolean llena;
     private int capacidadMaxima;
     private int capacidadActual;
+    private ArrayList<Asiento> asientos;
 
     public Sala() {
     }
 
-    public Sala(int id, String nombre, double precio, TipoSala tipo, boolean llena, int capacidadMaxima, int capacidadActual) {
+    public Sala(int id, String nombre, double precio, TipoSala tipo, boolean llena, int capacidadMaxima, int capacidadActual, ArrayList<Asiento> asientos) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
@@ -20,7 +23,18 @@ public class Sala {
         this.llena = llena;
         this.capacidadMaxima = capacidadMaxima;
         this.capacidadActual = capacidadActual;
+        this.asientos = asientos;
     }
+
+    public ArrayList<Asiento> getAsientos() {
+        return asientos;
+    }
+
+    public void setAsientos(ArrayList<Asiento> asientos) {
+        this.asientos = asientos;
+    }
+
+    
 
     public int getId() {
         return id;

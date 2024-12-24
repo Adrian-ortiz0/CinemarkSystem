@@ -4,11 +4,14 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
+import org.example.controllers.AsientosController;
 import org.example.controllers.FunctionsController;
 import org.example.controllers.PeliculasController;
 import org.example.controllers.SalasController;
+import org.example.models.Asiento;
 import org.example.models.Funcion;
 import org.example.models.Pelicula;
 import org.example.models.Sala;
@@ -175,14 +178,29 @@ public class FunctionCreater extends javax.swing.JFrame {
         Sala sala = getSalaPorNombre(nombreSala);
         Date fecha = (Date) fechaInicioSpinner.getValue();
         LocalDateTime fechaInicio = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        LocalDateTime fechaFin = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        ArrayList<Asiento> asientosSala = AsientosController.traerAsientosPorSala(sala.getId());
+        if (asientosSala == null || asientosSala.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se pudieron obtener los asientos de la sala.");
+            return;
+        }
+
         Funcion funcion = new Funcion();
         funcion.setPelicula(pelicula);
         funcion.setSala(sala);
         funcion.setFechaInicio(fechaInicio);
-        funcion.setFechaFin(fechaFin);
-        FunctionsController.crearFunciones(funcion);
+        funcion.setFechaFin(fechaInicio.plusMinutes(pelicula.getDuracion()));
+
+        funcion.setAsientos(asientosSala);
+
+        boolean funcionCreada = FunctionsController.crearFunciones(funcion);
+        if (funcionCreada) {
+            JOptionPane.showMessageDialog(this, "Función creada con éxito!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al crear la función.");
+        }
     }//GEN-LAST:event_crearFuncionButtonActionPerformed
+    
     private Pelicula getPeliculaPorNombre(String nombre){
         ArrayList<Pelicula> peliculas = PeliculasController.obtenerPeliculasDisponibles();
         for(Pelicula pelicula : peliculas){

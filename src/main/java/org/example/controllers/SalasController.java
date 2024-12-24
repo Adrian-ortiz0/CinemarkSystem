@@ -54,7 +54,14 @@ public class SalasController {
                 boolean llena = rs.getBoolean("Llena");
                 int capacidadMaxima = rs.getInt("CapacidadMaxima");
                 int capacidadActual = rs.getInt("CapacidadActual");
-                Sala sala = new Sala(id, nombre, precio, tipoSala, llena, capacidadMaxima, capacidadActual);
+                Sala sala = new Sala();
+                sala.setId(id);
+                sala.setNombre(nombre);
+                sala.setPrecio(precio);
+                sala.setTipo(tipoSala);
+                sala.setLlena(llena);
+                sala.setCapacidadMaxima(capacidadMaxima);
+                sala.setCapacidadActual(capacidadActual);
                 salas.add(sala);
             }
         } catch (SQLException ex) {

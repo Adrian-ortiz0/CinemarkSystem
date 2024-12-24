@@ -9,7 +9,9 @@ import org.example.models.Funcion;
 
 public class VenderTicketsSystem extends javax.swing.JFrame {
     DefaultTableModel mt = new DefaultTableModel();
-    public VenderTicketsSystem() {
+    private String cedula;
+    public VenderTicketsSystem(String cedulaObtenida) {
+        this.cedula = cedulaObtenida;
         initComponents();
         String [] columnas = {"ID", "Pelicula", "Sala", "Fecha Funcion", "Seleccionar"};
         mt.setColumnIdentifiers(columnas);
@@ -61,6 +63,8 @@ public class VenderTicketsSystem extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaFuncionesDisponibles);
 
+        verAsientosButton.setBackground(new java.awt.Color(51, 51, 51));
+        verAsientosButton.setForeground(new java.awt.Color(255, 255, 255));
         verAsientosButton.setText("Ver asientos");
         verAsientosButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -68,7 +72,14 @@ public class VenderTicketsSystem extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(51, 51, 51));
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Salir");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -125,20 +136,18 @@ public class VenderTicketsSystem extends javax.swing.JFrame {
         if(row >= 0){
             int idFuncion = (int) tablaFuncionesDisponibles.getValueAt(row, 0);
             System.out.println("ID de la función seleccionada: " + idFuncion);
-            VerAsientos ver = new VerAsientos(idFuncion);
+            VerAsientos ver = new VerAsientos(idFuncion, cedula);
             ver.setVisible(true);
             dispose();
         }
     }//GEN-LAST:event_verAsientosButtonActionPerformed
 
-    public static void main(String args[]) {
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        TiqueteroSystem ts = new TiqueteroSystem();
+        ts.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VenderTicketsSystem().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
