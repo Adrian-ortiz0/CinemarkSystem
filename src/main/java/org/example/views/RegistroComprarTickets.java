@@ -81,8 +81,11 @@ public class RegistroComprarTickets extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void siguienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteButtonActionPerformed
-        
         String cedula = inputCedula.getText();
+        if(cedula.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Debe ingresar una cedula para avanzar!");
+            return;
+        }
         Cliente cliente = ClientsController.obtenerClientePorCedula(cedula);
         if(cliente != null){
             VenderTicketsSystem vts = new VenderTicketsSystem(cedula);

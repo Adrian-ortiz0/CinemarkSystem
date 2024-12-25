@@ -35,6 +35,7 @@ public class InventarySystem extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Ver inventario");
 
         verInventarioButton1.setBackground(new java.awt.Color(51, 51, 51));
@@ -44,6 +45,7 @@ public class InventarySystem extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Ordenar Productos");
 
         orderProductosButton.setBackground(new java.awt.Color(51, 51, 51));

@@ -48,15 +48,24 @@ public class RemoveMovies extends javax.swing.JFrame {
     }
     
     private void actualizarEstadoPeliculas() {
-    DefaultTableModel mt = (DefaultTableModel) tablaPeliculas.getModel();
-    for (int i = 0; i < mt.getRowCount(); i++) {
-        Boolean seleccionado = (Boolean) mt.getValueAt(i, 4);
-        if (seleccionado) {
-            int idPelicula = (Integer) mt.getValueAt(i, 0);
-            PeliculasController.retirarPeliculas(idPelicula);
+        DefaultTableModel mt = (DefaultTableModel) tablaPeliculas.getModel();
+        boolean seSeleccionoAlMenosUna = false;
+
+        for (int i = 0; i < mt.getRowCount(); i++) {
+            Boolean seleccionado = (Boolean) mt.getValueAt(i, 4);
+            if (seleccionado) {
+                seSeleccionoAlMenosUna = true;
+                int idPelicula = (Integer) mt.getValueAt(i, 0);
+                PeliculasController.retirarPeliculas(idPelicula);
+            }
         }
+
+        if (!seSeleccionoAlMenosUna) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar al menos una película.");
+            return;
+        }
+
         recargarTablaPeliculas();
-    }
 }
 
 
@@ -94,7 +103,7 @@ public class RemoveMovies extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(51, 51, 51));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Quitar de Cartlera");
+        jButton1.setText("Quitar de Cartelera");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -122,8 +131,8 @@ public class RemoveMovies extends javax.swing.JFrame {
                         .addComponent(jLabel6))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(47, 47, 47)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(171, 171, 171)
+                        .addComponent(jButton2)
+                        .addGap(153, 153, 153)
                         .addComponent(jButton1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );

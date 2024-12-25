@@ -27,7 +27,7 @@ public class SubLogin extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(28, 28, 28));
 
         userButton1.setBackground(new java.awt.Color(51, 51, 51));
-        userButton1.setForeground(new java.awt.Color(204, 204, 204));
+        userButton1.setForeground(new java.awt.Color(255, 255, 255));
         userButton1.setText("User");
         userButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -36,7 +36,7 @@ public class SubLogin extends javax.swing.JFrame {
         });
 
         adminButton1.setBackground(new java.awt.Color(51, 51, 51));
-        adminButton1.setForeground(new java.awt.Color(204, 204, 204));
+        adminButton1.setForeground(new java.awt.Color(255, 255, 255));
         adminButton1.setText("Admin");
         adminButton1.setMargin(new java.awt.Insets(5, 14, 3, 14));
         adminButton1.addActionListener(new java.awt.event.ActionListener() {

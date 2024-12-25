@@ -113,12 +113,16 @@ public class PreRegistroCombos extends javax.swing.JFrame {
         String nombre = inputNombre.getText();
         String apellido = inputApellido.getText();
         String cedula = inputCedula.getText();
+        if(nombre.isEmpty() || apellido.isEmpty() || cedula.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Todos los campos deben estar completos!");
+            return;
+        }
         Cliente clienteNuevo = new Cliente();
         clienteNuevo.setNombre(nombre);
         clienteNuevo.setApellido(apellido);
         clienteNuevo.setCedula(cedula);
         boolean clienteCreado = ClientsController.crearClientes(clienteNuevo);
-        if(!clienteCreado){
+        if(!clienteCreado || nombre.isBlank() || apellido.isBlank() || cedula.isBlank()){
             JOptionPane.showMessageDialog(this, "Error al crear cliente!");
             return;
         }

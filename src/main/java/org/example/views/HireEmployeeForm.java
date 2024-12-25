@@ -86,9 +86,11 @@ public class HireEmployeeForm extends javax.swing.JFrame {
         });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Cinemark");
 
         salirBtn.setBackground(new java.awt.Color(51, 51, 51));
+        salirBtn.setForeground(new java.awt.Color(255, 255, 255));
         salirBtn.setText("Salir");
         salirBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,6 +184,10 @@ public class HireEmployeeForm extends javax.swing.JFrame {
         String apellido = apellidoInput.getText();
         String cedula = cedulaInput.getText();
         java.util.Date fechaNacimiento = fechaNacimientoInput.getDate();
+        if(nombre.isEmpty() || apellido.isEmpty() || cedula.isEmpty() || fechaNacimiento == null){
+            JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos!");
+            return;
+        }
         Employee employee = new Employee();
         employee.setNombre(nombre);
         employee.setApellido(apellido);
@@ -262,7 +268,5 @@ public class HireEmployeeForm extends javax.swing.JFrame {
     private javax.swing.JTextField nombreInput;
     private javax.swing.JComboBox<String> roleInput;
     private javax.swing.JButton salirBtn;
-    private javax.swing.JButton salirButton;
-    private javax.swing.JButton salirButton1;
     // End of variables declaration//GEN-END:variables
 }

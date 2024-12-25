@@ -42,10 +42,13 @@ public class RoleChangeEmployee extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Cedula:");
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nombre:");
 
+        buscarEmployeeButton.setBackground(new java.awt.Color(51, 51, 51));
         buscarEmployeeButton.setText("Buscar");
         buscarEmployeeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -53,8 +56,10 @@ public class RoleChangeEmployee extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Rol:");
 
+        cambiarRolButton.setBackground(new java.awt.Color(51, 51, 51));
         cambiarRolButton.setText("Cambiar");
         cambiarRolButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -156,6 +161,10 @@ public class RoleChangeEmployee extends javax.swing.JFrame {
 
     private void buscarEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarEmployeeButtonActionPerformed
         String cedula = cedulaInput.getText();
+        if(cedula.isEmpty()){
+            JOptionPane.showMessageDialog(this, "El campo cedula esta vacio!");
+            return;
+        }
         Employee employee = EmployeeController.obtenerEmpleadoPorCedula(cedula);
         if(employee == null){
             cedulaInput.setText("");

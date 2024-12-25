@@ -63,6 +63,8 @@ public class FuncionesList extends javax.swing.JFrame {
 
         jScrollPane1.setBackground(new java.awt.Color(51, 51, 51));
 
+        tablaFunciones.setBackground(new java.awt.Color(51, 51, 51));
+        tablaFunciones.setForeground(new java.awt.Color(255, 255, 255));
         tablaFunciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},

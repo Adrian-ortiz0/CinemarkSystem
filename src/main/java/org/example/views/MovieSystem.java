@@ -33,6 +33,7 @@ public class MovieSystem extends javax.swing.JFrame {
         jLabel6.setText("Cinemark");
 
         salirButton.setBackground(new java.awt.Color(51, 51, 51));
+        salirButton.setForeground(new java.awt.Color(255, 255, 255));
         salirButton.setText("Salir");
         salirButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -43,6 +43,7 @@ public class PreRegistroTickets extends javax.swing.JFrame {
         jLabel4.setText("Cedula:");
 
         siguienteButton.setBackground(new java.awt.Color(51, 51, 51));
+        siguienteButton.setForeground(new java.awt.Color(255, 255, 255));
         siguienteButton.setText("Siguiente");
         siguienteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,6 +117,10 @@ public class PreRegistroTickets extends javax.swing.JFrame {
         String nombre = inputNombre.getText();
         String apellido = inputApellido.getText();
         String cedula = inputCedula.getText();
+        if(nombre.isEmpty() || apellido.isEmpty() || cedula.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Todos los campos deben estar completos!");
+            return;
+        }
         Cliente cliente = new Cliente();
         cliente.setNombre(nombre);
         cliente.setApellido(apellido);

@@ -55,6 +55,9 @@ public class MovieRegister extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Duracion:");
 
+        inputFechaLanzamiento.setForeground(new java.awt.Color(255, 255, 255));
+
+        inputGeneros.setForeground(new java.awt.Color(255, 255, 255));
         inputGeneros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         inputGeneros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,6 +65,7 @@ public class MovieRegister extends javax.swing.JFrame {
             }
         });
 
+        salirButton.setBackground(new java.awt.Color(51, 51, 51));
         salirButton.setForeground(new java.awt.Color(255, 255, 255));
         salirButton.setText("Salir");
         salirButton.addActionListener(new java.awt.event.ActionListener() {
@@ -70,6 +74,7 @@ public class MovieRegister extends javax.swing.JFrame {
             }
         });
 
+        registrarButton.setBackground(new java.awt.Color(51, 51, 51));
         registrarButton.setForeground(new java.awt.Color(255, 255, 255));
         registrarButton.setText("Registrar");
         registrarButton.addActionListener(new java.awt.event.ActionListener() {

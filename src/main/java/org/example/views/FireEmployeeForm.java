@@ -30,6 +30,8 @@ public class FireEmployeeForm extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(19, 19, 19));
 
+        despedirButton.setBackground(new java.awt.Color(51, 51, 51));
+        despedirButton.setForeground(new java.awt.Color(255, 255, 255));
         despedirButton.setText("Despedir");
         despedirButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -43,12 +45,15 @@ public class FireEmployeeForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Cedula:");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Cinemark");
 
         salirButton.setBackground(new java.awt.Color(51, 51, 51));
+        salirButton.setForeground(new java.awt.Color(255, 255, 255));
         salirButton.setText("Salir");
         salirButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,6 +118,9 @@ public class FireEmployeeForm extends javax.swing.JFrame {
 
     private void despedirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_despedirButtonActionPerformed
         String cedula = inputCedula.getText();
+        if(cedula.isEmpty()){
+            JOptionPane.showMessageDialog(this, "El campo cedula esta vacio");
+        }
         Employee employee = EmployeeController.obtenerEmpleadoPorCedula(cedula);
         boolean despedido = EmployeeController.despedirEmpleados(employee.getCedula());
         if(despedido != false){

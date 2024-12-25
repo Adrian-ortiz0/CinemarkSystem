@@ -62,6 +62,8 @@ public class EditarFuncion extends javax.swing.JFrame {
 
         fechaInicioSpinner.setModel(new javax.swing.SpinnerDateModel());
 
+        actualizarButton.setBackground(new java.awt.Color(51, 51, 51));
+        actualizarButton.setForeground(new java.awt.Color(255, 255, 255));
         actualizarButton.setText("Actualizar");
         actualizarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -69,6 +71,8 @@ public class EditarFuncion extends javax.swing.JFrame {
             }
         });
 
+        salirButton.setBackground(new java.awt.Color(51, 51, 51));
+        salirButton.setForeground(new java.awt.Color(255, 255, 255));
         salirButton.setText("Salir");
         salirButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

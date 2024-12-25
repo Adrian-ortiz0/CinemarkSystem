@@ -29,6 +29,7 @@ public class LoginUser extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(14, 14, 14));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Cinemark");
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -126,7 +127,7 @@ public class LoginUser extends javax.swing.JFrame {
             ts.setVisible(true);
             dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Contraseña o correo invalido!");
+            JOptionPane.showMessageDialog(this, "Contraseña o correo incorrectos!", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_LoginButtonActionPerformed

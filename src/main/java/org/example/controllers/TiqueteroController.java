@@ -32,19 +32,16 @@ public class TiqueteroController {
         String sql = "SELECT * FROM tiquetero WHERE Correo = ? AND Contraseña = ?";
         Object [] params = {correo, contraseña};
         ResultSet rs = CRUD.consultarDB(sql, params);
-        Tiquetero tiquetero = new Tiquetero();
         try {
             while(rs != null && rs.next()){
                 int id = rs.getInt("ID");
                 String correoTiquetero = rs.getString("Correo");
                 String contraseñaTiquetero = rs.getString("Contraseña");
-                tiquetero.setId(id);
-                tiquetero.setContraseña(contraseñaTiquetero);
-                tiquetero.setCorreo(correoTiquetero);
+                return new Tiquetero(id, correoTiquetero, contraseñaTiquetero);
             }
         } catch (SQLException ex) {
             Logger.getLogger(TiqueteroController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return tiquetero;
+        return null;
     }
 }
