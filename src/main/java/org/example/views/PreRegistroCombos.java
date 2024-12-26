@@ -125,10 +125,13 @@ public class PreRegistroCombos extends javax.swing.JFrame {
         if(!clienteCreado || nombre.isBlank() || apellido.isBlank() || cedula.isBlank()){
             JOptionPane.showMessageDialog(this, "Error al crear cliente!");
             return;
+        } else {
+            JOptionPane.showMessageDialog(this, "Cliente " + clienteNuevo.getNombre() + " Creado con exito!");
+            VenderCombos vc = new VenderCombos(cedula);
+            vc.setVisible(true);
+            dispose();
         }
-        VenderCombos vc = new VenderCombos(cedula);
-        vc.setVisible(true);
-        dispose();
+        
     }//GEN-LAST:event_siguienteButtonActionPerformed
 
     public static void main(String args[]) {
