@@ -6,6 +6,7 @@ public class Cliente {
     private String apellido;
     private String cedula;
     private Membresia membresia;
+    private DescuentoStrategy descuentoStrategy;
 
     public Cliente() {
     }
@@ -16,6 +17,23 @@ public class Cliente {
         this.apellido = apellido;
         this.cedula = cedula;
         this.membresia = membresia;
+        setDescuentoStrategy();
+    }
+    
+    private void setDescuentoStrategy(){
+        switch(membresia.getNombre()){
+            case "GOLD":
+                this.descuentoStrategy = new DescuentoMembresiaGold();
+                break;
+            case "PLATINUM":
+                this.descuentoStrategy = new DescuentoMembresiaPlatino();
+                break;
+            default:
+                throw new IllegalArgumentException("Tipo de membresia no reconocida");
+        }
+    }
+    public double aplicarDescuento(double amount){
+        return descuentoStrategy.aplicarDescuento(amount);
     }
 
     public int getId() {
