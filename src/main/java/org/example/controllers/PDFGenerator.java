@@ -27,7 +27,7 @@ import org.example.models.Producto;
 
 public class PDFGenerator {
     
-    public static void generarFacturaCompra(Cliente cliente, ArrayList<Combo> combos, ArrayList<Producto> productos, double total, String medioDePago, int idCompra) {
+    public static void generarFacturaCompra(Cliente cliente, ArrayList<Combo> combos, ArrayList<Producto> productos, double total, String medioDePago, int idCompra, double totalConDescuento) {
         try {
             File folder = new File("facturas");
             if (!folder.exists()) {
@@ -64,6 +64,13 @@ public class PDFGenerator {
                                  "Fecha: " + LocalDate.now();
             document.add(new Paragraph(clienteInfo).setTextAlignment(TextAlignment.LEFT));
 
+            // Agregar información de suscripción y descuento
+            if (cliente.getMembresia() != null) {
+                String membresiaInfo = "Suscripción: " + cliente.getMembresia().getNombre() + "\n" +
+                                       "Descuento Aplicado: " + (1 - totalConDescuento / total) * 100 + "%";
+                document.add(new Paragraph(membresiaInfo).setTextAlignment(TextAlignment.LEFT));
+            }
+
             Table table = new Table(5);
             table.setWidth(UnitValue.createPercentValue(100));
             table.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -91,7 +98,8 @@ public class PDFGenerator {
 
             document.add(table);
 
-            Paragraph totalParagraph = new Paragraph("Total: " + total)
+            Paragraph totalParagraph = new Paragraph("Total: " + total + "\n" +
+                                                     "Total con Descuento: " + totalConDescuento)
                     .setFontSize(14)
                     .setBold()
                     .setTextAlignment(TextAlignment.RIGHT);
@@ -108,8 +116,10 @@ public class PDFGenerator {
         }
     }
 
+
+
     
-    public static void generarTicketDeCompra(Boleto boleto, double total) {
+    public static void generarTicketDeCompra(Boleto boleto, double total, double totalDescuento) {
         try {
             File folder = new File("facturas");
             if (!folder.exists()) {
@@ -172,7 +182,11 @@ public class PDFGenerator {
                     .setBold()
                     .setTextAlignment(TextAlignment.CENTER);
             document.add(totalParagraph);
-
+            Paragraph totalDescuentoParagraph = new Paragraph("Total con descuento: " + totalDescuento)
+                    .setFontSize(14)
+                    .setBold()
+                    .setTextAlignment(TextAlignment.CENTER);
+            document.add(totalDescuentoParagraph);
             document.close();
 
             System.out.println("Ticket generado y guardado en: " + outputPdf);

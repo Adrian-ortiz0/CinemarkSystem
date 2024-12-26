@@ -53,7 +53,7 @@ public class ComprarCombos extends javax.swing.JFrame {
 
         inputMedioDePago.setBackground(new java.awt.Color(51, 51, 51));
         inputMedioDePago.setForeground(new java.awt.Color(255, 255, 255));
-        inputMedioDePago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EFECTIVO", "TARJETA" }));
+        inputMedioDePago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EFECTIVO", "TARJETA", "SIN MEMBRESIA" }));
         inputMedioDePago.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputMedioDePagoActionPerformed(evt);
@@ -186,8 +186,8 @@ public class ComprarCombos extends javax.swing.JFrame {
                 }
             }
         }
-
-        int idCompra = CombosController.insertarCompra(cliente.getId(), totalFacturado, (String) inputMedioDePago.getSelectedItem());
+        double totalConDescuento = cliente.aplicarDescuento(totalFacturado);
+        int idCompra = CombosController.insertarCompra(cliente.getId(), totalConDescuento, (String) inputMedioDePago.getSelectedItem());
 
         if (idCompra <= 0) {
             JOptionPane.showMessageDialog(this, "Error al registrar la compra.");
@@ -211,8 +211,10 @@ public class ComprarCombos extends javax.swing.JFrame {
 
         JOptionPane.showMessageDialog(this, "Compra realizada con éxito!");
         inputMedioDePago.setSelectedIndex(0);
-        PDFGenerator.generarFacturaCompra(cliente, combos, productos, totalFacturado, medioDePago, idCompra);
-        
+        PDFGenerator.generarFacturaCompra(cliente, combos, productos, totalFacturado, medioDePago, idCompra, totalConDescuento);
+        TiqueteroSystem tc = new TiqueteroSystem();
+        tc.setVisible(true);
+        dispose();
     }//GEN-LAST:event_comprarButtonActionPerformed
 
     private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed

@@ -173,7 +173,8 @@ public class CompraTicket extends javax.swing.JFrame {
                 boletosComprados.add(boleto);
 
                 double precioUnitario = funcion.getSala().getPrecio() + asiento.getTipo().getPrecio();
-                totalFacturado += precioUnitario;
+                double precioConDescuento = cliente.aplicarDescuento(precioUnitario);
+                totalFacturado += precioConDescuento;
 
                 boolean actualizado = AsientosController.actualizarAsiento(asiento.getId());
                 if (actualizado) {
@@ -182,14 +183,18 @@ public class CompraTicket extends javax.swing.JFrame {
                 } else {
                     System.out.println("Error al actualizar el asiento " + asiento.getId() + " en la base de datos.");
                 }
-
-                PDFGenerator.generarTicketDeCompra(boleto, precioUnitario);
+                
+                PDFGenerator.generarTicketDeCompra(boleto, precioUnitario, precioConDescuento);
+                
             }
         }
 
         boolean facturaInsertada = FacturasController.insertarFacturasYDetalles(Date.valueOf(LocalDate.now()), cliente.getId(), totalFacturado, metodoPago);
         if (facturaInsertada) {
             JOptionPane.showMessageDialog(this, "Tiquete/s generados con éxito!");
+            TiqueteroSystem ts = new TiqueteroSystem();
+                ts.setVisible(true);
+                dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Error al generar la factura.");
         }

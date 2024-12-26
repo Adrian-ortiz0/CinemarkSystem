@@ -28,6 +28,9 @@ public class Cliente {
             case "PLATINUM":
                 this.descuentoStrategy = new DescuentoMembresiaPlatino();
                 break;
+            case "SIN MEMBRESIA":
+                this.descuentoStrategy = new DescuentoSinMembresia();
+                break;
             default:
                 throw new IllegalArgumentException("Tipo de membresia no reconocida");
         }
@@ -74,6 +77,7 @@ public class Cliente {
 
     public void setMembresia(Membresia membresia) {
         this.membresia = membresia;
+        setDescuentoStrategy();
     }
     
 }
