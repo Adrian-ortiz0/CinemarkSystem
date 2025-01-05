@@ -1,0 +1,247 @@
+CREATE DATABASE IF NOT EXISTS cinemark;
+
+USE cinemark;
+
+CREATE TABLE IF NOT EXISTS administrador(
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+    Correo VARCHAR(100) NOT NULL,
+    Contraseña VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tiquetero(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Correo VARCHAR(100) NOT NULL,
+    Contraseña VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS rol(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NombreRol VARCHAR(100) NOT NULL,
+    Salario DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS empleados(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    Cedula INT NOT NULL UNIQUE,
+    FechaNacimiento DATE NOT NULL,
+    ID_Rol INT NOT NULL,
+    FOREIGN KEY (ID_Rol) REFERENCES rol(ID)
+);
+
+CREATE TABLE IF NOT EXISTS peliculas(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    FechaLanzamiento DATE NOT NULL,
+    Director VARCHAR(100) NOT NULL,
+    Genero ENUM("ACCION", "COMEDIA", "DRAMA", "THRILLER", "ROMANCE", "ANIMACION", "SCI_FI", "TERROR", "DOCUMENTAL"),
+    Duracion INT NOT NULL,
+    Disponible BOOLEAN NOT NULL,
+    Estreno BOOLEAN NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tipoAsientos(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    Precio DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS salas(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    Precio DECIMAL(10, 2) NOT NULL,
+    Tipo ENUM("BASICA", "GRANDE", "XD", "S3D"),
+    Llena BOOLEAN NOT NULL,
+    CapacidadMaxima INT NOT NULL,
+    CapacidadActual INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS asientos( 
+    ID INT PRIMARY KEY AUTO_INCREMENT, 
+    ID_Sala INT NOT NULL, 
+    ID_TipoAsiento INT NOT NULL, 
+    Fila VARCHAR(5) NOT NULL, 
+    Numero INT NOT NULL,
+    Ocupado BOOLEAN NOT NULL,
+    FOREIGN KEY (ID_Sala) REFERENCES salas(ID), 
+    FOREIGN KEY (ID_TipoAsiento) REFERENCES tipoAsientos(ID) 
+);
+
+CREATE TABLE IF NOT EXISTS proveedores(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NombreEmpresa VARCHAR(100) NOT NULL,
+    Contacto VARCHAR(100) NOT NULL,
+    Direccion VARCHAR(100) NOT NULL,
+    Telefono VARCHAR(100) NOT NULL,
+    Correo VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS medidasMateriaPrima(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ordenesDeCompra(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Proveedor INT NOT NULL,
+    FechaOrden DATE NOT NULL,
+    Total DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (ID_Proveedor) REFERENCES proveedores(ID)
+);
+
+CREATE TABLE IF NOT EXISTS materiaPrima(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    ID_MedidasMateriaPrima INT NOT NULL,
+    PrecioPorUnidad DECIMAL(10, 2) NOT NULL,
+    FechaVencimiento DATE NULL,
+    FOREIGN KEY (ID_MedidasMateriaPrima) REFERENCES medidasMateriaPrima(ID)
+);
+
+CREATE TABLE IF NOT EXISTS proveedoresMateriaPrima(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Proveedor INT NOT NULL,
+    ID_MateriaPrima INT NOT NULL,
+    PrecioPorUnidad DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (ID_Proveedor) REFERENCES proveedores(ID),
+    FOREIGN KEY (ID_MateriaPrima) REFERENCES materiaPrima(ID)
+);
+
+CREATE TABLE IF NOT EXISTS detalleOrden(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Orden INT NOT NULL,
+    ID_MateriaPrima INT NOT NULL,
+    Cantidad INT NOT NULL,
+    PrecioUnitario DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (ID_Orden) REFERENCES ordenesDeCompra(ID),
+    FOREIGN KEY (ID_MateriaPrima) REFERENCES materiaPrima(ID)
+);
+
+CREATE TABLE IF NOT EXISTS productos(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    Precio DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS productos_materia_prima (
+    ID_Producto INT,
+    ID_MateriaPrima INT,
+    Cantidad INT,
+    PRIMARY KEY (ID_Producto, ID_MateriaPrima),
+    FOREIGN KEY (ID_Producto) REFERENCES productos(ID),
+    FOREIGN KEY (ID_MateriaPrima) REFERENCES materiaPrima(ID)
+);
+
+CREATE TABLE IF NOT EXISTS combos(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    Precio DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS combos_productos (
+    ID_Combo INT,
+    ID_Producto INT,
+    Cantidad INT,
+    PRIMARY KEY (ID_Combo, ID_Producto),
+    FOREIGN KEY (ID_Combo) REFERENCES combos(ID),
+    FOREIGN KEY (ID_Producto) REFERENCES productos(ID)
+);
+
+CREATE TABLE IF NOT EXISTS inventario(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    ID_MateriaPrima INT NOT NULL,
+    Cantidad INT NOT NULL,
+    CantidadMinima INT NOT NULL,
+    CantidadNecesaria INT NOT NULL,
+    FOREIGN KEY (ID_MateriaPrima) REFERENCES materiaPrima(ID)
+);
+
+CREATE TABLE IF NOT EXISTS membresias(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    Precio DECIMAL(10, 2) NOT NULL,
+    Descripcion TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS clientes (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    Cedula VARCHAR(100) NOT NULL UNIQUE,
+    ID_Membresia INT DEFAULT 3,
+    FOREIGN KEY (ID_Membresia) REFERENCES membresias(ID)
+);
+
+CREATE TABLE IF NOT EXISTS funciones(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    FechaInicio DATETIME NOT NULL,
+    FechaFin DATETIME NOT NULL,
+    ID_Pelicula INT NOT NULL,
+    ID_Sala INT NOT NULL,
+    Completa BOOLEAN NOT NULL DEFAULT FALSE,
+    FOREIGN KEY (ID_Pelicula) REFERENCES peliculas(ID),
+    FOREIGN KEY (ID_Sala) REFERENCES salas(ID)
+);
+
+CREATE TABLE IF NOT EXISTS funcionAsientos (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Funcion INT NOT NULL,
+    ID_Asiento INT NOT NULL,
+    Estado BOOLEAN NOT NULL DEFAULT FALSE,
+    FOREIGN KEY (ID_Funcion) REFERENCES funciones(ID),
+    FOREIGN KEY (ID_Asiento) REFERENCES asientos(ID)
+);
+
+CREATE TABLE IF NOT EXISTS boletos(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Cliente INT NOT NULL,
+    ID_Asiento INT NOT NULL,
+    ID_Funcion INT NOT NULL,
+    Vencido BOOLEAN NOT NULL,
+    FOREIGN KEY (ID_Cliente) REFERENCES clientes(ID),
+    FOREIGN KEY (ID_Asiento) REFERENCES asientos(ID),
+    FOREIGN KEY (ID_Funcion) REFERENCES funciones(ID)
+);
+
+CREATE TABLE IF NOT EXISTS facturas(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    FechaFactura DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ID_Cliente INT NOT NULL,
+    Total DECIMAL(10, 2) NOT NULL,
+    MetodoPago ENUM("EFECTIVO", "TARJETA") NOT NULL,
+    FOREIGN KEY (ID_Cliente) REFERENCES clientes(ID)
+);
+
+CREATE TABLE IF NOT EXISTS detalleFacturas(
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Factura INT NULL,
+    Cantidad INT NOT NULL,
+    PrecioUnitario DECIMAL(10, 2) NOT NULL,
+    ID_Boleto INT NOT NULL,
+    FOREIGN KEY (ID_Boleto) REFERENCES boletos(ID),
+    FOREIGN KEY (ID_Factura) REFERENCES facturas(ID)
+);
+
+-- Registros de combos y productos
+
+CREATE TABLE IF NOT EXISTS comprasCombosProductos (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Cliente INT NOT NULL,
+    FechaCompra DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    Total DECIMAL(10, 2) NOT NULL,
+    MetodoPago ENUM('EFECTIVO', 'TARJETA') NOT NULL,
+    FOREIGN KEY (ID_Cliente) REFERENCES clientes(ID)
+);
+
+CREATE TABLE IF NOT EXISTS detalleCompras (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Compra INT NOT NULL,
+    ID_Combo INT NULL,
+    ID_Producto INT NULL,
+    Cantidad INT NOT NULL,
+    PrecioUnitario DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (ID_Compra) REFERENCES comprasCombosProductos(ID),
+    FOREIGN KEY (ID_Combo) REFERENCES combos(ID),
+    FOREIGN KEY (ID_Producto) REFERENCES productos(ID)
+);
