@@ -18,10 +18,13 @@ public class ComboBuilder {
         return this;
     }
 
-    public ComboBuilder addProducto(Producto producto) {
-        this.productos.add(producto);
+    public ComboBuilder addProducto(Producto producto, int cantidad) {
+        for (int i = 0; i < cantidad; i++) {
+            this.productos.add(producto);
+        }
         return this;
     }
+
 
     public Combo build() {
         return new Combo(id, nombre, productos);

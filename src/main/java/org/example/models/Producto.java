@@ -6,6 +6,7 @@ public class Producto {
     private int id;
     private String nombre;
     private double precio;
+    private int cantidad;
     private ArrayList<MateriaPrima> ingredientes;
 
     public Producto() {
@@ -17,6 +18,23 @@ public class Producto {
         this.precio = precio;
         this.ingredientes = ingredientes;
     }
+
+    public Producto(int id, String nombre, double precio, int cantidad, ArrayList<MateriaPrima> ingredientes) {
+        this.id = id;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.cantidad = cantidad;
+        this.ingredientes = ingredientes;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+    
 
     public int getId() {
         return id;

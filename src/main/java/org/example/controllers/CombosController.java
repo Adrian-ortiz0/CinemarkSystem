@@ -3,6 +3,10 @@ package org.example.controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.example.models.Combo;
 import org.example.models.MateriaPrima;
 import org.example.models.Producto;
@@ -10,6 +14,122 @@ import org.example.persistence.CRUD;
 import org.example.persistence.ConnectionDB;
 
 public class CombosController {
+    
+    public static boolean crearNuevoCombo(Combo combo) {
+    CRUD.setConexion(ConnectionDB.getConnection());
+    try {
+        String sqlCombo = "INSERT INTO combos (Nombre, Precio) VALUES (?, ?)";
+        Object[] paramsCombo = {combo.getNombre(), combo.getPrecioTotal()};
+        CRUD.insertarDB(sqlCombo, paramsCombo);
+
+        ResultSet rs = CRUD.consultarDB("SELECT LAST_INSERT_ID()");
+        int idCombo = 0;
+        if (rs.next()) {
+            idCombo = rs.getInt(1);
+        }
+
+        for (HashMap.Entry<Producto, Integer> entry : combo.getProductosMap().entrySet()) {
+            Producto producto = entry.getKey();
+            int cantidad = entry.getValue();
+            String sqlProductos = "INSERT INTO combos_productos (ID_Combo, ID_Producto, Cantidad) VALUES (?, ?, ?)";
+            Object[] paramsProductos = {idCombo, producto.getId(), cantidad};
+            CRUD.insertarDB(sqlProductos, paramsProductos);
+        }
+
+        return true;
+    } catch (SQLException e) {
+        throw new RuntimeException("Error al insertar el nuevo combo", e);
+    }
+}
+
+
+
+    
+    public static Producto obtenerProductoPorNombre(String nombre){
+        CRUD.setConexion(ConnectionDB.getConnection());
+        String sql = "SELECT * FROM productos WHERE Nombre = ?;";
+        Producto producto = new Producto();
+        Object [] params = {nombre};
+        ResultSet rs = CRUD.consultarDB(sql, params);
+        try {
+            while(rs != null && rs.next()){
+                int id = rs.getInt("ID");
+                double precio = rs.getDouble("Precio");
+                producto.setId(id);
+                producto.setNombre(nombre);
+                producto.setPrecio(precio);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CombosController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return producto;
+    }
+    
+    public static ArrayList<Producto> obtenerAdicionales(){
+        CRUD.setConexion(ConnectionDB.getConnection());
+        String sql = "SELECT * FROM productos WHERE id IN (4, 11, 12, 13)";
+        ArrayList<Producto> adicionales = new ArrayList();
+        ResultSet rs = CRUD.consultarDB(sql);
+        try {
+            while(rs != null && rs.next()){
+                int id = rs.getInt("ID");
+                String nombre = rs.getString("Nombre");
+                double precio = rs.getDouble("Precio");
+                Producto producto = new Producto();
+                producto.setId(id);
+                producto.setNombre(nombre);
+                producto.setPrecio(precio);
+                adicionales.add(producto);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CombosController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return adicionales;
+    }
+    
+    public static ArrayList<Producto> obtenerRefrescos(){
+        CRUD.setConexion(ConnectionDB.getConnection());
+        String sql = "SELECT * FROM productos WHERE id IN (5, 6, 7)";
+        ArrayList<Producto> refrescos = new ArrayList();
+        ResultSet rs = CRUD.consultarDB(sql);
+        try {
+            while(rs != null && rs.next()){
+                int id = rs.getInt("ID");
+                String nombre = rs.getString("Nombre");
+                double precio = rs.getDouble("Precio");
+                Producto producto = new Producto();
+                producto.setId(id);
+                producto.setNombre(nombre);
+                producto.setPrecio(precio);
+                refrescos.add(producto);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CombosController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return refrescos;
+    }
+    
+    public static ArrayList<Producto> obtenerPalomitas(){
+        CRUD.setConexion(ConnectionDB.getConnection());
+        String sql = "SELECT * FROM productos WHERE id IN (1, 2, 3)";
+        ArrayList<Producto> palomitas = new ArrayList();
+        ResultSet rs = CRUD.consultarDB(sql);
+        try {
+            while(rs != null && rs.next()){
+                int id = rs.getInt("ID");
+                String nombre = rs.getString("Nombre");
+                double precio = rs.getDouble("Precio");
+                Producto producto = new Producto();
+                producto.setId(id);
+                producto.setNombre(nombre);
+                producto.setPrecio(precio);
+                palomitas.add(producto);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CombosController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return palomitas;
+    }
     
     public static ArrayList<MateriaPrima> obtenerMateriasPrimasProducto(int idProducto) {
         CRUD.setConexion(ConnectionDB.getConnection());
