@@ -242,6 +242,11 @@ public class CombosSystem extends javax.swing.JFrame {
         Producto refrescos = CombosController.obtenerProductoPorNombre((String) refrescosComboBox.getSelectedItem());
         Producto adicional = CombosController.obtenerProductoPorNombre((String) adicionalesComboBox.getSelectedItem());
         Producto adicional2 = CombosController.obtenerProductoPorNombre((String) adicionalesComboBox2.getSelectedItem());
+        
+        if(adicional.getNombre().equals(adicional2.getNombre())){
+            JOptionPane.showMessageDialog(this, "No se puede colocar el mismo adicional 2 veces!");
+            return;
+        }
 
         int cantidadPalomitas = Integer.parseInt(palomitasCantidadComboBox.getSelectedItem().toString());
         int cantidadRefrescos = Integer.parseInt(refrescosCantidadComboBox.getSelectedItem().toString());
