@@ -146,7 +146,7 @@ INSERT INTO inventario (ID_MateriaPrima, Cantidad, CantidadMinima, CantidadNeces
 (16, 250, 100, 700),
 (17, 50, 100, 500);
 
-INSERT INTO Proveedores (NombreEmpresa, Contacto, Direccion, Telefono, Correo) VALUES 
+INSERT INTO proveedores (NombreEmpresa, Contacto, Direccion, Telefono, Correo) VALUES
 ("Maiz Medellin", "Juan Pérez", "Calle 123, Medellín", "1478963", "maizmedellin@gmail.com"),
 ("Coca-Cola", "Ana Gómez", "Avenida 45, Bogotá", "11111111", "coca_cola@gmail.com"),
 ("Salchichas El Rey", "Carlos Martínez", "Carrera 12, Bogotá", "21212121", "elrey@gmail.com"),
@@ -196,7 +196,7 @@ INSERT INTO tipoAsientos (Nombre, Precio) VALUES
 ("Basico", 8000.0),
 ("Preferencial", 11000.0);
 -- Sala Basica
-INSERT INTO Asientos (ID_Sala, ID_TipoAsiento, Fila, Numero, Ocupado) VALUES
+INSERT INTO asientos (ID_Sala, ID_TipoAsiento, Fila, Numero, Ocupado) VALUES
 (1, 1, 'A', 1, FALSE),
 (1, 1, 'A', 2, FALSE),
 (1, 1, 'A', 3, FALSE),
@@ -248,7 +248,7 @@ INSERT INTO Asientos (ID_Sala, ID_TipoAsiento, Fila, Numero, Ocupado) VALUES
 (1, 2, 'E', 9, FALSE),
 (1, 2, 'E', 10, FALSE);
 -- Sala Basica B
-INSERT INTO Asientos (ID_Sala, ID_TipoAsiento, Fila, Numero, Ocupado) VALUES
+INSERT INTO asientos (ID_Sala, ID_TipoAsiento, Fila, Numero, Ocupado) VALUES
 (2, 1, 'A', 1, FALSE),
 (2, 1, 'A', 2, FALSE),
 (2, 1, 'A', 3, FALSE),
@@ -576,7 +576,7 @@ INSERT INTO asientos (ID_Sala, ID_TipoAsiento, Fila, Numero, Ocupado) VALUES
 (5, 2, 'J', 9, FALSE),
 (5, 2, 'J', 10, FALSE);
 -- Sala 3d
-INSERT INTO Asientos (ID_Sala, ID_TipoAsiento, Fila, Numero, Ocupado) VALUES
+INSERT INTO asientos (ID_Sala, ID_TipoAsiento, Fila, Numero, Ocupado) VALUES
 (6, 1, 'A', 1, FALSE),
 (6, 1, 'A', 2, FALSE),
 (6, 1, 'A', 3, FALSE),
@@ -628,7 +628,7 @@ INSERT INTO Asientos (ID_Sala, ID_TipoAsiento, Fila, Numero, Ocupado) VALUES
 (6, 2, 'E', 9, FALSE),
 (6, 2, 'E', 10, FALSE);
 -- sala xd
-INSERT INTO Asientos (ID_Sala, ID_TipoAsiento, Fila, Numero, Ocupado) VALUES
+INSERT INTO asientos (ID_Sala, ID_TipoAsiento, Fila, Numero, Ocupado) VALUES
 (7, 1, 'A', 1, FALSE),
 (7, 1, 'A', 2, FALSE),
 (7, 1, 'A', 3, FALSE),
